@@ -6,20 +6,20 @@ import net.minecraft.network.PacketByteBuf;
 
 public class ThirstManager extends ClampedEntityAttribute {
 
-    public static final String NBT_VALUE = "nbt_value";
-    public static final String NBT_CHURN_VALUE = "nbt_churn_value";
+    public static final String NBT_VALUE = "nbt_thirst_value";
+    public static final String NBT_CHURN_VALUE = "nbt_thirst_churn_value";
     private static final String KEY = Cxybalanceddiet.MOD_ID + ".thirst";
     /**
      * 口渴值
      */
-    private double value = 20;
+    private double value = 100;
     /**
-     * 每次流失
+     * 流失倍数，过热时会增加
      */
     private double churnValue = 1;
 
     public ThirstManager() {
-        super(KEY, 20, 0, 20);
+        super(KEY, 100, 0, 100);
     }
 
     public double getChurnValue() {
@@ -43,7 +43,7 @@ public class ThirstManager extends ClampedEntityAttribute {
     }
 
     public void reset() {
-        this.value = 20;
+        this.value = 100;
         this.churnValue = 1;
     }
 
