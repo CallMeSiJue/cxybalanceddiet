@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "cxybalanceddiet",
+  "version": "${version}",
+  "name": "cxybalanceddiet",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/CallMeSiJue/cxybalanceddiet"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/cxybalanceddiet/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "cxy.cxybalanceddiet.client.CxybalanceddietClient"
+    ],
+    "main": [
+      "cxy.cxybalanceddiet.Cxybalanceddiet"
+    ]
+  },
+  "mixins": [
+    "cxybalanceddiet.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
