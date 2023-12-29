@@ -43,4 +43,9 @@ public class ProteinManager extends ClampedEntityAttribute {
     public void readFromData(PacketByteBuf data) {
         this.value = data.readDouble();
     }
+
+    public void copyFrom(ProteinManager f) {
+
+        this.value = f.getValue();
+    }
 }

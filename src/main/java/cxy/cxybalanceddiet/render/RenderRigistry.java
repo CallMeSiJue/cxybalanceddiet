@@ -6,6 +6,6 @@ public class RenderRigistry {
     public static void register() {
 
         HudRenderCallback.EVENT.register(ThirstRender::renderThird);
-       
+
     }
 }

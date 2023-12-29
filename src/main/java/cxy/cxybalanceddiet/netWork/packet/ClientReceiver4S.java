@@ -8,17 +8,16 @@ public class ClientReceiver4S {
 
     public static void receiver() {
         ClientPlayNetworking.registerGlobalReceiver(
-                NetworkHandler.THIRST_VALUE,
+                NetworkHandler.NUTRITION_VALUE
+                ,
                 (client, handler, buf, responseSender) -> {
-
                     // 在客户端主线程上执行操作
                     client.execute(() -> {
 
                         // 根据接收到的温度数据更新客户端，比如HUD
                         if (client.player != null) {
                             Accessor accessor = (Accessor) client.player;
-                            accessor.getThirstManager().readFromData(buf);
-
+                            NetworkHandler.readNutritionValue(buf, accessor);
                         }
                     });
 

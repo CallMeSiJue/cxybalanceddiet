@@ -43,4 +43,8 @@ public class FatManager extends ClampedEntityAttribute {
     public void readFromData(PacketByteBuf data) {
         this.value = data.readDouble();
     }
+
+    public void copyFrom(FatManager fatManager) {
+        this.value = fatManager.value;
+    }
 }

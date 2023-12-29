@@ -28,6 +28,11 @@ public class FiberManager extends ClampedEntityAttribute {
         this.value = clamp(value);
     }
 
+    public void copyFrom(FiberManager f) {
+
+        this.value = f.getValue();
+    }
+
     public void add(double value) {
         this.value = clamp(this.value + value);
     }

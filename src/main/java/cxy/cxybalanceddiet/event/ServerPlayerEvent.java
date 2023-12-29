@@ -1,7 +1,6 @@
 package cxy.cxybalanceddiet.event;
 
-import cxy.cxybalanceddiet.attribute.Accessor;
-import cxy.cxybalanceddiet.attribute.ThirstManager;
+import cxy.cxybalanceddiet.attribute.*;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.minecraft.entity.player.HungerManager;
 
@@ -13,12 +12,21 @@ public class ServerPlayerEvent {
             }
             HungerManager oldHungerManager = oldPlayer.getHungerManager();
             ThirstManager oldThirstManager = ((Accessor) oldPlayer).getThirstManager();
+            FatManager fatManager = ((Accessor) oldPlayer).getFatManager();
+            FiberManager fiberManager = ((Accessor) oldPlayer).getFiberManager();
+            ProteinManager proteinManager = ((Accessor) oldPlayer).getProteinManager();
 
             HungerManager newHungerManager = newPlayer.getHungerManager();
             ThirstManager newThirstManager = ((Accessor) newPlayer).getThirstManager();
+            FatManager newFatManager = ((Accessor) newPlayer).getFatManager();
+            FiberManager newFiberManager = ((Accessor) newPlayer).getFiberManager();
+            ProteinManager newProteinManager = ((Accessor) newPlayer).getProteinManager();
             if (!alive) {
                 newHungerManager.setSaturationLevel(1.0F);
-                newThirstManager.reset();
+                oldThirstManager.copyFrom(oldThirstManager);
+                newFatManager.copyFrom(fatManager);
+                newFiberManager.copyFrom(fiberManager);
+                newProteinManager.copyFrom(proteinManager);
 
             } else {
                 newHungerManager.setFoodLevel(oldHungerManager.getFoodLevel());

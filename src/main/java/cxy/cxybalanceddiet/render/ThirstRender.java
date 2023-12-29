@@ -4,13 +4,14 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import cxy.cxybalanceddiet.Cxybalanceddiet;
 import cxy.cxybalanceddiet.attribute.Accessor;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 
 public class ThirstRender {
-    private static final Identifier THIRST_HUD = new Identifier(Cxybalanceddiet.MOD_ID, "textures/thirst/thirst_icons.png");
+    private static final Identifier HUD = new Identifier(Cxybalanceddiet.MOD_ID, "textures/gui/hcs_stat.png");
 
     public static void renderThird(DrawContext drawContext, float tickDelta) {
         MinecraftClient client = MinecraftClient.getInstance();
@@ -22,91 +23,42 @@ public class ThirstRender {
             return;
         }
         Accessor playerAccessor = (Accessor) player;
-        int width = client.getWindow().getScaledWidth() / 2;
-        int height = client.getWindow().getScaledHeight();
-        int bounceFactor = 0;
+        int width = client.getWindow().getScaledWidth();
+        int height = client.getWindow().getScaledHeight() / 2;
+
 
         // Defining the texture
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, THIRST_HUD);
-
-        // Get the ThirstManager for the player
+        RenderSystem.setShaderTexture(0, HUD);
 
 
         // Get the thirstValue
         int thirstValue = (int) playerAccessor.getThirstManager().getValue();
+        int x = width - 5 - 16;
+        int thiHeight = (int) ((thirstValue / 100d) * 16);
+        TextRenderer textRenderer = client.textRenderer;
 
-        // If the player currently is in a hot biome for enough time or in The Nether
-        int hotXFactor = 0;
-        int hotYFactor = 0;
+        drawContext.drawTexture(HUD, x, height, 0, 48, 16, 16);
+        drawContext.drawTexture(HUD, x, height + (16 - thiHeight), 16, 48 + (16 - thiHeight), 16, thiHeight);
+        drawContext.drawTextWithShadow(textRenderer, String.valueOf(thirstValue), x, height + 17, 0xFFFFFF);
 
-//        if (playerData.playerTempStatus == PlayerTempStatus.HOT.getCode()) {
-//            hotYFactor = 9;
-//        } else if (playerData.playerTempStatus == PlayerTempStatus.VERY_HOT.getCode()) {
-//            hotXFactor = 36;
-//        }
+        // FAT
+        height += 28;
+        int farValue = (int) playerAccessor.getFatManager().getValue();
+        drawContext.drawTexture(HUD, x, height, 0, 144, 16, 16);
+        drawContext.drawTextWithShadow(textRenderer, String.valueOf(farValue), x, height + 17, 0xFFFFFF);
+        // FIBER
+        height += 28;
+        int fiberValue = (int) playerAccessor.getFiberManager().getValue();
+        drawContext.drawTexture(HUD, x, height, 16, 144, 16, 16);
+        drawContext.drawTextWithShadow(textRenderer, String.valueOf(fiberValue), x, height + 17, 0xFFFFFF);
 
-
-        // If the player currently has the thirst effect
-
-
-        // Create the Thirst Bar
-        // Empty Thirst
-        for (int i = 0; i < 10; i++) {
-
-            drawContext.drawTexture(THIRST_HUD,
-                    (width + 82 - (i * 9) + i),
-                    (height - 49 + bounceFactor),
-                    hotYFactor,
-                    0,
-                    9,
-                    9,
-                    256,
-                    256);
-        }
-
-        // Half Thirst
-        for (int i = 0; i < 20; i++) {
-            if (thirstValue != 0) {
-                if (((thirstValue + 1) / 2) > i) {
-
-                    drawContext.drawTexture(THIRST_HUD,
-                            (width + 82 - (i * 9) + i),
-                            (height - 49 + bounceFactor),
-                            9 + hotXFactor,
-                            9,
-                            9,
-                            9,
-                            256,
-                            256);
-                } else {
-                    break;
-                }
-            }
-        }
-
-        // Full Thirst
-        for (int i = 0; i < 20; i++) {
-            if (thirstValue != 0) {
-                if ((thirstValue / 2) > i) {
-
-                    drawContext.drawTexture(THIRST_HUD,
-                            (width + 82 - (i * 9) + i),
-                            (height - 49 + bounceFactor),
-                            hotXFactor,
-                            9,
-                            9,
-                            9,
-                            256,
-                            256);
-                } else {
-                    break;
-                }
-            }
-        }
-
-
+        // PROTEIN
+        height += 28;
+        int proteinValue = (int) playerAccessor.getProteinManager().getValue();
+        drawContext.drawTexture(HUD, x, height, 32, 144, 16, 16);
+        drawContext.drawTextWithShadow(textRenderer, String.valueOf(proteinValue), x, height + 17, 0xFFFFFF);
     }
 
 

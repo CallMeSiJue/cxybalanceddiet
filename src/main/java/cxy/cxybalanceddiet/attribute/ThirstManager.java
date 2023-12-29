@@ -47,6 +47,11 @@ public class ThirstManager extends ClampedEntityAttribute {
         this.churnValue = 1;
     }
 
+    public void copyFrom(ThirstManager f) {
+        this.churnValue = f.getChurnValue();
+        this.value = f.getValue();
+    }
+
     public void writeToData(PacketByteBuf data) {
         data.writeDouble(this.value);
         data.writeDouble(this.churnValue);

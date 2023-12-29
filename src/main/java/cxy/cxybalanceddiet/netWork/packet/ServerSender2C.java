@@ -16,12 +16,11 @@ public class ServerSender2C {
     private static final Logger log = LoggerFactory.getLogger(ServerSender2C.class);
 
     public static void sender(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-        double thirst = buf.readDouble();
-
+        
         PacketByteBuf thirstData = PacketByteBufs.create();
         Accessor accessor = (Accessor) player;
-        accessor.getThirstManager().writeToData(thirstData);
-        log.info("客户端传输的{},服务端的{}", thirst, accessor.getThirstManager().getValue());
-        ServerPlayNetworking.send(player, NetworkHandler.THIRST_VALUE, thirstData);
+        NetworkHandler.writeNutritionValue(thirstData, accessor);
+
+        ServerPlayNetworking.send(player, NetworkHandler.NUTRITION_VALUE, thirstData);
     }
 }
