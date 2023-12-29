@@ -14,11 +14,19 @@ public class TempManager extends ClampedEntityAttribute {
      */
     private double value = 26;
 
+    private double envTemp = 26;
 
     public TempManager() {
         super(KEY, 26, -200, 200);
     }
 
+    public double getEnvTemp() {
+        return envTemp;
+    }
+
+    public void setEnvTemp(double envTemp) {
+        this.envTemp = envTemp;
+    }
 
     public double getValue() {
         return value;
@@ -38,10 +46,12 @@ public class TempManager extends ClampedEntityAttribute {
 
     public void writeToData(PacketByteBuf data) {
         data.writeDouble(this.value);
+        data.writeDouble(this.envTemp);
     }
 
     public void readFromData(PacketByteBuf data) {
         this.value = data.readDouble();
+        this.envTemp = data.readDouble();
     }
 
     public void copyFrom(TempManager fatManager) {

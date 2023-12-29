@@ -3,6 +3,7 @@ package cxy.cxybalanceddiet.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import cxy.cxybalanceddiet.Cxybalanceddiet;
 import cxy.cxybalanceddiet.attribute.Accessor;
+import cxy.cxybalanceddiet.attribute.TempManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -10,10 +11,10 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.util.Identifier;
 
-public class ThirstRender {
+public class StatusRender {
     private static final Identifier HUD = new Identifier(Cxybalanceddiet.MOD_ID, "textures/gui/hcs_stat.png");
 
-    public static void renderThird(DrawContext drawContext, float tickDelta) {
+    public static void statusRender(DrawContext drawContext, float tickDelta) {
         MinecraftClient client = MinecraftClient.getInstance();
 
 
@@ -59,6 +60,13 @@ public class ThirstRender {
         int proteinValue = (int) playerAccessor.getProteinManager().getValue();
         drawContext.drawTexture(HUD, x, height, 16, 144, 16, 16);
         drawContext.drawTextWithShadow(textRenderer, String.valueOf(proteinValue), x, height + 17, 0xFFFFFF);
+
+        // temp
+        TempManager tempManager = playerAccessor.getTempManager();
+        int temp = (int) tempManager.getValue();
+        double envTemp = tempManager.getEnvTemp();
+        
+
     }
 
 

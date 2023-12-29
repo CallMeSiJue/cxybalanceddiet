@@ -141,8 +141,8 @@ public class TemHandler {
         double loseTemp = BASIC_PLAYER_TEMP_LOSE * getPlayerLose(environmentTemperature, player) * lose * lose2 * tempLose;
 
         double result = temp + riseTemp + loseTemp;
-        log.info("玩家的 环境温度为：{} 体温为:{}", environmentTemperature, result);
         tempManager.setValue(result);
+        tempManager.setEnvTemp(environmentTemperature);
     }
 
     /**
