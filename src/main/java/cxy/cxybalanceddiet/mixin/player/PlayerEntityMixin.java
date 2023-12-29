@@ -2,12 +2,16 @@ package cxy.cxybalanceddiet.mixin.player;
 
 
 import cxy.cxybalanceddiet.attribute.*;
+import cxy.cxybalanceddiet.config.FoodConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.FoodComponent;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.text.Text;
@@ -20,6 +24,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
 @Mixin(PlayerEntity.class)
@@ -141,6 +146,25 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
 
     }
 
+    @Inject(method = "eatFood", at = @At("HEAD"))
+    public void eatFood(World world, ItemStack stack, CallbackInfoReturnable<ItemStack> cir) {
+        Item item = stack.getItem();
+        String name = item.getTranslationKey();
+        FoodComponent food = item.getFoodComponent();
+        if (food == null) {
+            return;
+        }
+        FoodConfig foodConfig = FoodConfig.getInstance();
+        Double fatValue = foodConfig.containsInKey(name, foodConfig.fatFood);
+        this.fatManager.add(fatValue);
+        Double fiberValue = foodConfig.containsInKey(name, foodConfig.fiberFood);
+        this.fiberManager.add(fiberValue);
+        Double proteinValue = foodConfig.containsInKey(name, foodConfig.proteinFood);
+        this.proteinManager.add(proteinValue);
+        Double thirstValue = foodConfig.containsInKey(name, foodConfig.waterFood);
+        this.thirstManager.add(thirstValue);
+    }
+
     @Inject(method = "addExhaustion", at = @At("TAIL"))
     public void addExhaustion(float exhaustion, CallbackInfo ci) {
         if (this.getWorld().isClient) {
@@ -148,7 +172,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
         }
         this.thirstManager.add(-exhaustion / 5); //70 originally
         this.fatManager.add(-exhaustion / 20);
-        this.fiberManager.add(-exhaustion / 10);
+        this.fiberManager.add(-exhaustion / 30);
         this.proteinManager.add(-exhaustion / 15);
 
     }

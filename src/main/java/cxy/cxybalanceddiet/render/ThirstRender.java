@@ -51,13 +51,13 @@ public class ThirstRender {
         // FIBER
         height += 28;
         int fiberValue = (int) playerAccessor.getFiberManager().getValue();
-        drawContext.drawTexture(HUD, x, height, 16, 144, 16, 16);
+        drawContext.drawTexture(HUD, x, height, 32, 144, 16, 16);
         drawContext.drawTextWithShadow(textRenderer, String.valueOf(fiberValue), x, height + 17, 0xFFFFFF);
 
         // PROTEIN
         height += 28;
         int proteinValue = (int) playerAccessor.getProteinManager().getValue();
-        drawContext.drawTexture(HUD, x, height, 32, 144, 16, 16);
+        drawContext.drawTexture(HUD, x, height, 16, 144, 16, 16);
         drawContext.drawTextWithShadow(textRenderer, String.valueOf(proteinValue), x, height + 17, 0xFFFFFF);
     }
 
