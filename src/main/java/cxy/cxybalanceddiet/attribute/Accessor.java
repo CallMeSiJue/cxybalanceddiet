@@ -8,4 +8,6 @@ public interface Accessor {
     FiberManager getFiberManager();
 
     ProteinManager getProteinManager();
+
+    TempManager getTempManager();
 }

@@ -2,6 +2,7 @@ package cxy.cxybalanceddiet.netWork.packet;
 
 import cxy.cxybalanceddiet.attribute.Accessor;
 import cxy.cxybalanceddiet.netWork.NetworkHandler;
+import cxy.cxybalanceddiet.utils.TemHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -16,7 +17,11 @@ public class ServerSender2C {
     private static final Logger log = LoggerFactory.getLogger(ServerSender2C.class);
 
     public static void sender(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
-        
+        // 逻辑处理
+
+        // 温度处理
+        TemHandler.dealPlayerTemp(server, player);
+
         PacketByteBuf thirstData = PacketByteBufs.create();
         Accessor accessor = (Accessor) player;
         NetworkHandler.writeNutritionValue(thirstData, accessor);

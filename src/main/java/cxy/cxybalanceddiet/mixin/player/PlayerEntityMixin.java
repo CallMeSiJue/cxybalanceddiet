@@ -46,6 +46,9 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
     @Unique
     protected ProteinManager proteinManager = new ProteinManager();
 
+    @Unique
+    protected TempManager tempManager = new TempManager();
+
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -114,6 +117,12 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
         return this.proteinManager;
     }
 
+    @Unique
+    @Override
+    public TempManager getTempManager() {
+        return this.tempManager;
+    }
+
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
     public void readCustomDataFromNbt(@NotNull NbtCompound nbt, CallbackInfo info) {
         if (this.getWorld().isClient) {
@@ -128,6 +137,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
         this.fiberManager.setValue(nbt.contains(FiberManager.NBT_VALUE, NbtElement.DOUBLE_TYPE) ? nbt.getDouble(FiberManager.NBT_VALUE) : 70);
         // protein
         this.proteinManager.setValue(nbt.contains(ProteinManager.NBT_VALUE, NbtElement.DOUBLE_TYPE) ? nbt.getDouble(ProteinManager.NBT_VALUE) : 70);
+        // temp
+        this.tempManager.setValue(nbt.contains(TempManager.NBT_VALUE, NbtElement.DOUBLE_TYPE) ? nbt.getDouble(TempManager.NBT_VALUE) : 26.5);
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
@@ -143,6 +154,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
         nbt.putDouble(FiberManager.NBT_VALUE, this.fiberManager.getValue());
         // protein
         nbt.putDouble(ProteinManager.NBT_VALUE, this.proteinManager.getValue());
+        // temp
+        nbt.putDouble(TempManager.NBT_VALUE, this.tempManager.getValue());
 
     }
 

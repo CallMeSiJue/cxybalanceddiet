@@ -23,6 +23,7 @@ public class NetworkHandler {
         accessor.getFatManager().readFromData(data);
         accessor.getFiberManager().readFromData(data);
         accessor.getProteinManager().readFromData(data);
+        accessor.getTempManager().readFromData(data);
 
     }
 
@@ -31,7 +32,7 @@ public class NetworkHandler {
         accessor.getFatManager().writeToData(data);
         accessor.getFiberManager().writeToData(data);
         accessor.getProteinManager().writeToData(data);
-
+        accessor.getTempManager().writeToData(data);
     }
 
 }

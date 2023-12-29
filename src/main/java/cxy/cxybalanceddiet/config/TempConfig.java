@@ -1,0 +1,90 @@
+package cxy.cxybalanceddiet.config;
+
+
+import cxy.cxybalanceddiet.utils.dto.ArmorTemp;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class TempConfig {
+    private static TempConfig instance = null;
+
+    public Map<String, Integer> heatingBlocks;
+    public Map<String, Integer> coolingBlocks;
+    public List<ArmorTemp> helmetTempItems;
+
+    public List<ArmorTemp> chestplateTempItems;
+    //balanced_diet
+
+    public List<ArmorTemp> leggingTempItems;
+
+    public List<ArmorTemp> bootTempItems;
+
+    public Map<String, Integer> heldTempItems;
+
+    private TempConfig() {
+        // 初始化 heatingBlocks 和 coolingBlocks
+        heatingBlocks = new HashMap<>(Map.of("Block{minecraft:torch}", 5,
+                "Block{minecraft:fire}", 10,
+                "Block{minecraft:lava}", 20,
+                "Block{minecraft:campfire}", 10,
+                "Block{minecraft:wall_torch}", 10,
+                "Block{minecraft:soul_torch}", -5,
+                "Block{minecraft:soul_wall_torch}", -5,
+                "Block{minecraft:soul_campfire}", -10));
+
+        coolingBlocks = new HashMap<>(Map.of("Block{minecraft:ice}", -10,
+                "Block{minecraft:packed_ice}", -10,
+                "Block{minecraft:blue_ice}", -20));
+
+        // 头盔
+        helmetTempItems = List.of(
+                new ArmorTemp("leather_helmet", 1d, 0.95),
+                new ArmorTemp("iron_helmet", 1d, 1.2),
+                new ArmorTemp("golden_helmet", 1d, 1.3),
+                new ArmorTemp("diamond_helmet", 1d, 1.05),
+                new ArmorTemp("netherite_helmet", 1d, 1.1)
+        );
+
+        // 胸甲
+        chestplateTempItems = List.of(
+                new ArmorTemp("leather_chestplate", 3d, 0.85),
+                new ArmorTemp("iron_chestplate", 3d, 1.1),
+                new ArmorTemp("golden_chestplate", 3d, 1.25),
+                new ArmorTemp("diamond_chestplate", 3d, 1.0),
+                new ArmorTemp("netherite_chestplate", 3d, 1.05)
+        );
+
+        // 护腿
+        leggingTempItems = List.of(
+                new ArmorTemp("leather_leggings", 2d, 0.88),
+                new ArmorTemp("iron_leggings", 2d, 1.15),
+                new ArmorTemp("golden_leggings", 2d, 1.3),
+                new ArmorTemp("diamond_leggings", 2d, 1.02),
+                new ArmorTemp("netherite_leggings", 2d, 1.08)
+        );
+
+        // 靴子
+        bootTempItems = List.of(
+                new ArmorTemp("leather_boots", 1d, 0.92),
+                new ArmorTemp("iron_boots", 1d, 1.2),
+                new ArmorTemp("golden_boots", 1d, 1.4),
+                new ArmorTemp("diamond_boots", 1d, 1.05),
+                new ArmorTemp("netherite_boots", 1d, 1.1)
+        );
+
+        heldTempItems = new HashMap<>(Map.of("torch", 5, "lava_bucket", 10, "soul_torch", -5));
+    }
+
+    public static TempConfig getInstance() {
+        if (instance == null) {
+            synchronized (TempConfig.class) {
+                if (instance == null) {
+                    instance = new TempConfig();
+                }
+            }
+        }
+        return instance;
+    }
+}

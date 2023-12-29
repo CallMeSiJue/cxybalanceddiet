@@ -4,19 +4,19 @@ import cxy.cxybalanceddiet.Cxybalanceddiet;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;
 import net.minecraft.network.PacketByteBuf;
 
-public class FatManager extends ClampedEntityAttribute {
+public class TempManager extends ClampedEntityAttribute {
 
-    public static final String NBT_VALUE = "nbt_fat_value";
+    public static final String NBT_VALUE = "nbt_temp_value";
 
-    private static final String KEY = Cxybalanceddiet.MOD_ID + ".fat";
+    private static final String KEY = Cxybalanceddiet.MOD_ID + ".temp";
     /**
      * 口渴值
      */
-    private double value = 70;
+    private double value = 26;
 
 
-    public FatManager() {
-        super(KEY, 70, 0, 200);
+    public TempManager() {
+        super(KEY, 26, -200, 200);
     }
 
 
@@ -33,7 +33,7 @@ public class FatManager extends ClampedEntityAttribute {
     }
 
     public void reset() {
-        this.value = 20;
+        this.value = 26;
     }
 
     public void writeToData(PacketByteBuf data) {
@@ -44,20 +44,7 @@ public class FatManager extends ClampedEntityAttribute {
         this.value = data.readDouble();
     }
 
-    public void copyFrom(FatManager fatManager) {
+    public void copyFrom(TempManager fatManager) {
         this.value = fatManager.value;
-    }
-
-
-    /**
-     * 玩家温度流失系数
-     *
-     * @return
-     */
-    public double getTempLose() {
-        if (this.value < 75) {
-            return 1;
-        }
-        return 1.48 - 0.0064 * this.value;
     }
 }

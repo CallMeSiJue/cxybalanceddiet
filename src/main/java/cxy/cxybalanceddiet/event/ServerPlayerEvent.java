@@ -1,8 +1,13 @@
 package cxy.cxybalanceddiet.event;
 
 import cxy.cxybalanceddiet.attribute.*;
+import cxy.cxybalanceddiet.netWork.NetworkHandler;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.HungerManager;
+import net.minecraft.network.PacketByteBuf;
 
 public class ServerPlayerEvent {
     public static void init() {
@@ -35,16 +40,18 @@ public class ServerPlayerEvent {
             }
 
         }));
-//        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-//
-//            PacketByteBuf data = PacketByteBufs.create();
-//            if (handler.getPlayer() != null && handler.getPlayer().age < 20) {
-//                server.execute(() -> {
-//                    new ThirstManager().writeToData(data);
-//                    ServerPlayNetworking.send(handler.getPlayer(), NetworkHandler.THIRST_VALUE, data);
-//                });
-//            }
-//        });
+        // 玩家加入时发送数据包
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+
+            PacketByteBuf data = PacketByteBufs.create();
+
+            server.execute(() -> {
+                Accessor accessor = (Accessor) handler.player;
+                NetworkHandler.writeNutritionValue(data, accessor);
+                ServerPlayNetworking.send(handler.getPlayer(), NetworkHandler.NUTRITION_VALUE, data);
+            });
+
+        });
 
 
     }
