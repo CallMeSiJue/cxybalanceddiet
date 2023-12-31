@@ -4,6 +4,7 @@
   "package": "cxy.cxybalanceddiet.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "player.HungerManageMixin",
     "player.PlayerEntityMixin"
   ],
   "client": [

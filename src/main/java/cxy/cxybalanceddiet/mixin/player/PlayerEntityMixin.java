@@ -139,6 +139,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
         this.proteinManager.setValue(nbt.contains(ProteinManager.NBT_VALUE, NbtElement.DOUBLE_TYPE) ? nbt.getDouble(ProteinManager.NBT_VALUE) : 70);
         // temp
         this.tempManager.setValue(nbt.contains(TempManager.NBT_VALUE, NbtElement.DOUBLE_TYPE) ? nbt.getDouble(TempManager.NBT_VALUE) : 26.5);
+        this.tempManager.setColdTick(nbt.contains(TempManager.NBT_COLD_TICK_VALUE, NbtElement.INT_TYPE) ? nbt.getInt(TempManager.NBT_COLD_TICK_VALUE) : 0);
+        this.tempManager.setHotTick(nbt.contains(TempManager.NBT_HOT_TICK_VALUE, NbtElement.INT_TYPE) ? nbt.getInt(TempManager.NBT_HOT_TICK_VALUE) : 0);
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
@@ -156,7 +158,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
         nbt.putDouble(ProteinManager.NBT_VALUE, this.proteinManager.getValue());
         // temp
         nbt.putDouble(TempManager.NBT_VALUE, this.tempManager.getValue());
-
+        nbt.putInt(TempManager.NBT_COLD_TICK_VALUE, this.tempManager.getColdTick());
+        nbt.putInt(TempManager.NBT_HOT_TICK_VALUE, this.tempManager.getHotTick());
     }
 
     @Inject(method = "eatFood", at = @At("HEAD"))

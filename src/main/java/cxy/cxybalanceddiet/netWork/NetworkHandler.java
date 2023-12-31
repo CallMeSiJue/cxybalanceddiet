@@ -11,11 +11,22 @@ public class NetworkHandler {
     /**
      * 口渴传输
      */
-    public static final Identifier THIRST_VALUE = new Identifier(Cxybalanceddiet.MOD_ID, "thirst_value");
+    public static final Identifier TICK_VALUE = new Identifier(Cxybalanceddiet.MOD_ID, "tick_value");
     public static final Identifier NUTRITION_VALUE = new Identifier(Cxybalanceddiet.MOD_ID, "nutrition_value");
 
     public static void registerC2SPackets() {
-        ServerPlayNetworking.registerGlobalReceiver(NUTRITION_VALUE, ServerSender2C::sender);
+        ServerPlayNetworking.registerGlobalReceiver(TICK_VALUE, ServerSender2C::sender);
+    }
+
+    public static void readFromClient(PacketByteBuf data, Accessor accessor) {
+
+        accessor.getTempManager().readFromClient(data);
+
+    }
+
+    public static void writeToServer(PacketByteBuf data, Accessor accessor) {
+
+        accessor.getTempManager().writeToServer(data);
     }
 
     public static void readNutritionValue(PacketByteBuf data, Accessor accessor) {

@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import cxy.cxybalanceddiet.attribute.Accessor;
 import cxy.cxybalanceddiet.attribute.FatManager;
 import cxy.cxybalanceddiet.attribute.TempManager;
+import cxy.cxybalanceddiet.attribute.ThirstManager;
 import cxy.cxybalanceddiet.config.CustomBiomeTemperatures;
 import cxy.cxybalanceddiet.config.TempConfig;
 import net.minecraft.block.BlockState;
@@ -130,19 +131,55 @@ public class TemHandler {
         Accessor accessor = (Accessor) player;
         TempManager tempManager = accessor.getTempManager();
         FatManager fatManager = accessor.getFatManager();
+        ThirstManager thirstManager = accessor.getThirstManager();
         double temp = tempManager.getValue();
         double lose2 = temp > NORMAL_TEM ? 1.2 : 1;
         double rise2 = temp < NORMAL_TEM ? 1.2 : 1;
 
         double tempLose = fatManager.getTempLose();
         Double environmentTemperature = getEnvironmentTemperature(server, player);
-        double riseTemp = BASIC_PLAYER_TEMP_RISE * getPlayerRise(environmentTemperature, player) * rise * rise2;
-
-        double loseTemp = BASIC_PLAYER_TEMP_LOSE * getPlayerLose(environmentTemperature, player) * lose * lose2 * tempLose;
+        Double envTemp = environmentTemperature;
+        if (environmentTemperature > 36) {
+            int totalFireProtectionLevel = getTotalFireProtectionLevel(player);
+            envTemp = Math.max(28, environmentTemperature - totalFireProtectionLevel * 5);
+        }
+        double riseTemp = BASIC_PLAYER_TEMP_RISE * getPlayerRise(envTemp, player) * rise * rise2;
+        double loseTemp = BASIC_PLAYER_TEMP_LOSE * getPlayerLose(envTemp, player) * lose * lose2 * tempLose;
 
         double result = temp + riseTemp + loseTemp;
+        if (result > 38 && result < 42) {
+            thirstManager.add(-0.2);
+            result -= 0.1;
+        } else if (result >= 42 && result < 46) {
+            thirstManager.add(-0.8);
+            result -= 0.3;
+        } else if (result >= 46) {
+            thirstManager.add(-1.4);
+            result -= 0.5;
+        }
         tempManager.setValue(result);
         tempManager.setEnvTemp(environmentTemperature);
+    }
+
+    public static void checkCoolTick(TempManager tempManager, PlayerEntity player) {
+        double minAdaptTemp = NORMAL_TEM - 2 * (BASIC_ADAPTATION_TEMP + getPlayerAdaptionTemp(player));
+        double value = tempManager.getValue();
+        if (value > minAdaptTemp) {
+            tempManager.coldTick = Math.max(0, --tempManager.coldTick);
+            return;
+        }
+        tempManager.coldTick = Math.min(400, ++tempManager.coldTick);
+
+    }
+
+    public static void checkHotTick(TempManager tempManager, PlayerEntity player) {
+        double maxAdaptTemp = NORMAL_TEM + 2 * (BASIC_ADAPTATION_TEMP + getPlayerAdaptionTemp(player));
+        double value = tempManager.getValue();
+        if (value < maxAdaptTemp) {
+            tempManager.hotTick = Math.max(0, --tempManager.hotTick);
+            return;
+        }
+        tempManager.hotTick = Math.min(200, ++tempManager.hotTick);
     }
 
     /**
@@ -278,7 +315,7 @@ public class TemHandler {
      * @return
      */
     public static double getPlayerRise(double envTemp, PlayerEntity player) {
-        final double lowerBoundTemp = -200; // 环境温度下限
+        final double lowerBoundTemp = -100; // 环境温度下限
         double minAdaptTemp = NORMAL_TEM - BASIC_ADAPTATION_TEMP - getPlayerAdaptionTemp(player); // 环境温度上限
 
         if (envTemp < lowerBoundTemp) {
@@ -298,7 +335,7 @@ public class TemHandler {
      * @return
      */
     public static double getPlayerLose(double envTemp, PlayerEntity player) {
-        final double upperBoundTemp = 200; // 环境温度的上限
+        final double upperBoundTemp = 100; // 环境温度的上限
         double minAdaptTemp = NORMAL_TEM + BASIC_ADAPTATION_TEMP + getPlayerAdaptionTemp(player); // 最大适应温度
 
         if (envTemp > upperBoundTemp) {

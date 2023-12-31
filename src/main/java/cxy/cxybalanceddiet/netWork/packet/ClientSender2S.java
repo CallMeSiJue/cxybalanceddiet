@@ -11,7 +11,7 @@ public class ClientSender2S {
     public static void sender(PlayerEntity player) {
         PacketByteBuf data = PacketByteBufs.create();
         Accessor accessor = (Accessor) player;
-        NetworkHandler.writeNutritionValue(data, accessor);
-        ClientPlayNetworking.send(NetworkHandler.NUTRITION_VALUE, data);
+        NetworkHandler.writeToServer(data, accessor);
+        ClientPlayNetworking.send(NetworkHandler.TICK_VALUE, data);
     }
 }

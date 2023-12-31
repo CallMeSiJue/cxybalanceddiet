@@ -48,4 +48,14 @@ public class FiberManager extends ClampedEntityAttribute {
     public void readFromData(PacketByteBuf data) {
         this.value = data.readDouble();
     }
+
+    public Integer regenerationSpeed() {
+        if (value < 40) {
+            return 20;
+        } else if (value < 80) {
+            return 10;
+        } else {
+            return 5;
+        }
+    }
 }

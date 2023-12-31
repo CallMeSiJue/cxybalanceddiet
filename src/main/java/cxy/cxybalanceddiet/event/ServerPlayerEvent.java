@@ -21,17 +21,21 @@ public class ServerPlayerEvent {
             FiberManager fiberManager = ((Accessor) oldPlayer).getFiberManager();
             ProteinManager proteinManager = ((Accessor) oldPlayer).getProteinManager();
 
+
             HungerManager newHungerManager = newPlayer.getHungerManager();
             ThirstManager newThirstManager = ((Accessor) newPlayer).getThirstManager();
             FatManager newFatManager = ((Accessor) newPlayer).getFatManager();
             FiberManager newFiberManager = ((Accessor) newPlayer).getFiberManager();
             ProteinManager newProteinManager = ((Accessor) newPlayer).getProteinManager();
+            TempManager newTempManager = ((Accessor) newPlayer).getTempManager();
             if (!alive) {
                 newHungerManager.setSaturationLevel(1.0F);
                 oldThirstManager.copyFrom(oldThirstManager);
                 newFatManager.copyFrom(fatManager);
                 newFiberManager.copyFrom(fiberManager);
                 newProteinManager.copyFrom(proteinManager);
+                newTempManager.reset();
+
 
             } else {
                 newHungerManager.setFoodLevel(oldHungerManager.getFoodLevel());
