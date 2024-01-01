@@ -26,7 +26,8 @@ public class FoodConfig {
                 Map.entry("melon_slice", 0.1),
                 Map.entry("mushroom_stew", 0.2),
                 Map.entry("rabbit_stew", 1.0),
-                Map.entry("beetroot_soup", 0.1)
+                Map.entry("beetroot_soup", 0.1),
+                Map.entry("cookie ", 1.2)
                 // 可以根据需要添加更多
         );
 
@@ -38,7 +39,8 @@ public class FoodConfig {
                 Map.entry("melon_slice", 0.2),
                 Map.entry("mushroom_stew", 0.5),
                 Map.entry("rabbit_stew", 0.8),
-                Map.entry("beetroot_soup", 0.9)
+                Map.entry("beetroot_soup", 0.9),
+                Map.entry("cookie ", 1.2)
                 // 可以根据需要添加更多
         );
 

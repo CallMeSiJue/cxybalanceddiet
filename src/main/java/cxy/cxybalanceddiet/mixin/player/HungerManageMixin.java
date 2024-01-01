@@ -2,6 +2,7 @@ package cxy.cxybalanceddiet.mixin.player;
 
 import cxy.cxybalanceddiet.attribute.Accessor;
 import cxy.cxybalanceddiet.attribute.FiberManager;
+import cxy.cxybalanceddiet.attribute.ProteinManager;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.Difficulty;
@@ -44,6 +45,7 @@ public abstract class HungerManageMixin {
         }
         Accessor accessor = (Accessor) player;
         FiberManager fiberManager = accessor.getFiberManager();
+        ProteinManager proteinManager = accessor.getProteinManager();
         if ((bl = player.getWorld().getGameRules().getBoolean(GameRules.NATURAL_REGENERATION)) && this.saturationLevel > 0.0f && player.canFoodHeal() && this.foodLevel >= 20) {
             ++this.foodTickTimer;
             if (this.foodTickTimer >= fiberManager.regenerationSpeed()) {
@@ -51,6 +53,8 @@ public abstract class HungerManageMixin {
                 player.heal(f / 6.0f);
                 this.addExhaustion(f);
                 this.foodTickTimer = 0;
+                fiberManager.add(-1);
+                proteinManager.add(-1);
             }
         } else if (bl && this.foodLevel >= 18 && player.canFoodHeal()) {
             ++this.foodTickTimer;

@@ -187,8 +187,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Accessor
             return;
         }
         this.thirstManager.add(-exhaustion / 5); //70 originally
-        this.fatManager.add(-exhaustion / 20);
-        this.fiberManager.add(-exhaustion / 30);
+        this.fatManager.add(-exhaustion / 10);
+        this.fiberManager.add(-exhaustion / 15);
         this.proteinManager.add(-exhaustion / 15);
 
     }
